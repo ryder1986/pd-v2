@@ -115,16 +115,17 @@ public slots:
         int rpl;
         switch (client_cmd) {
         case Protocol::ADD_CAMERA:
-            emit session_operation(client_cmd,this,src_buf+Protocol::HEAD_LENGTH,pkg_len,0);
+            emit session_operation(client_cmd,this,pkg_len,0,src_buf+Protocol::HEAD_LENGTH,ret_size);
             break;
         case  Protocol::GET_CONFIG:
-            emit session_operation(client_cmd,this,NULL,0,0);
+            emit session_operation(client_cmd,this,0,0,dst_buf,ret_size);
+         //   prt(info,"%d",ret_size);
             break;
         case Protocol::DEL_CAMERA:
-            emit session_operation(client_cmd,this,NULL,0,cam_index);
+            emit session_operation(client_cmd,this,0,cam_index,NULL,ret_size);
             break;
         case Protocol::MOD_CAMERA:
-            emit session_operation(client_cmd,this,src_buf+Protocol::HEAD_LENGTH,pkg_len,cam_index);
+            emit session_operation(client_cmd,this,pkg_len,cam_index,src_buf+Protocol::HEAD_LENGTH,ret_size);
             break;
         case Protocol::CAM_OUTPUT_OPEN:
             break;
@@ -165,7 +166,7 @@ signals :
     int get_server_config(char *buf);
     void socket_error(ClientSession *c);
     //    int try_lock_server();
-    void session_operation(int req,void *addr,char *buf, int len,int cam_index);
+    void session_operation(int req,void *addr, int len,int cam_index,char *buf,int &ret_size);
 private:
     char *rcv_buf;
     char send_buf[Pd::BUFFER_LENGTH];

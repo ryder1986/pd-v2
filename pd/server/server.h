@@ -27,15 +27,23 @@ public slots:
         prt(info,"client %s:%d connected",str.toStdString().data(),skt->peerPort());
         ClientSession *client=new ClientSession(skt);
         connect(client,SIGNAL(socket_error(ClientSession*)),this,SLOT(delete_client(ClientSession*)));
-        connect(client,SIGNAL( session_operation(int,void*,char*,int,int)),this,SLOT(handle_session_op(int,void*,char*,int,int)),Qt::DirectConnection);//important,in case of competition bugs
+        connect(client,SIGNAL( session_operation(int,void*,int,int,char*,int&)),this,SLOT(handle_session_op(int,void*,int,int,char*,int&)),Qt::DirectConnection);//important,in case of competition bugs
         connect(skt,SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(displayError(QAbstractSocket::SocketError)));
 
         clients.append(client);
     }
-    void handle_session_op(int req,void *addr,char *buf, int len,int cam_index)
+    void handle_session_op(int cmd,void *addr, int len,int cam_index,char *ret_buf, int &ret_len)
     {
-        int idx=clients.indexOf((ClientSession *)addr);
-        prt(debug,"client %d msg",idx);
+        ClientSession *s=(ClientSession *)addr;
+        int idx=clients.indexOf(s);
+       // ret_len=17;
+        QJsonObject config;
+        camera_manager->get_config(config);
+        QJsonDocument doc(config);
+        QByteArray dst_config=doc.toJson();
+        memcpy(ret_buf,dst_config.data(),dst_config.size());
+        ret_len=dst_config.size();
+        prt(debug,"handle client cmd %d ",cmd);
     }
 
     void delete_client(ClientSession *c)
