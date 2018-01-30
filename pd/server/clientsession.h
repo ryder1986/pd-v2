@@ -101,9 +101,10 @@ public slots:
         QByteArray client_buf=skt->readAll();
         prt(debug,"get %d bytes",client_buf.size());
         rcv_buf=client_buf.data();
-
-        int ret_size=process(rcv_buf,send_buf,client_buf.size());
-        writes_num=skt->write(send_buf,ret_size);
+        int head_len=Protocol::HEAD_LENGTH;
+        memcpy(send_buf,rcv_buf,head_len);
+        int ret_size=process(rcv_buf,send_buf+head_len,client_buf.size());
+        writes_num=skt->write(send_buf,ret_size+head_len);
         prt(debug,"server reply %d bytes",writes_num);
     }
     int process(char *src_buf,char*dst_buf,int size)
