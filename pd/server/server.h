@@ -27,18 +27,19 @@ public slots:
         prt(info,"client %s:%d connected",str.toStdString().data(),skt->peerPort());
         ClientSession *client=new ClientSession(skt);
         connect(client,SIGNAL(socket_error(ClientSession*)),this,SLOT(delete_client(ClientSession*)));
-        connect(client,SIGNAL( session_operation(int,void*,int,int,char*,int&)),this,SLOT(handle_session_op(int,void*,int,int,char*,int&)),Qt::DirectConnection);//important,in case of competition bugs
+        connect(client,SIGNAL( session_operation(int,void*,int,int,char*,int&)),this,SLOT(on_client_msg_recived(int,void*,int,int,char*,int&)),Qt::DirectConnection);//important,in case of competition bugs
         connect(skt,SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(displayError(QAbstractSocket::SocketError)));
 
         clients.append(client);
     }
-    void handle_session_op(int cmd,void *addr, int len,int cam_index,char *ret_buf, int &ret_len)
+    void on_client_msg_recived(int cmd,void *addr, int len,int cam_index,char *ret_buf, int &ret_len)
     {
         ClientSession *s=(ClientSession *)addr;
         int idx=clients.indexOf(s);
        // ret_len=17;
         QJsonObject config;
-        camera_manager->get_config(config);
+      //  camera_manager->get_config(config);
+        database->get_config(config);
         QJsonDocument doc(config);
         QByteArray dst_config=doc.toJson();
         memcpy(ret_buf,dst_config.data(),dst_config.size());

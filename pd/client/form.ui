@@ -222,27 +222,6 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit">
-           <property name="text">
-            <string>192.168.1.216</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton">
-           <property name="text">
-            <string>connect</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_get_config">
-           <property name="text">
-            <string>get_config</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QPushButton" name="pushButton_search">
            <property name="text">
             <string>search device</string>
@@ -250,7 +229,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QGroupBox" name="groupBox_camera_detail">
+          <widget class="QGroupBox" name="groupBox_test">
            <property name="maximumSize">
             <size>
              <width>300</width>
@@ -258,15 +237,72 @@
             </size>
            </property>
            <property name="title">
-            <string>url</string>
+            <string>test</string>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout">
-            <item>
-             <widget class="QLineEdit" name="lineEdit_url">
-              <property name="enabled">
-               <bool>false</bool>
+           <layout class="QFormLayout" name="formLayout">
+            <item row="2" column="0">
+             <widget class="QLineEdit" name="lineEdit_get"/>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="pushButton_get">
+              <property name="text">
+               <string>get</string>
               </property>
              </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLineEdit" name="lineEdit_set"/>
+            </item>
+            <item row="3" column="1">
+             <widget class="QPushButton" name="pushButton_set">
+              <property name="text">
+               <string>set</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QPushButton" name="pushButton_add">
+              <property name="text">
+               <string>add</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1">
+             <widget class="QPushButton" name="pushButton_del">
+              <property name="text">
+               <string>del</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLineEdit" name="lineEdit_add"/>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLineEdit" name="lineEdit_del"/>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="pushButton_connect">
+              <property name="text">
+               <string>connect</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLineEdit" name="lineEdit_connect">
+              <property name="text">
+               <string>192.168.1.216</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="1">
+             <widget class="QPushButton" name="pushButton_mod">
+              <property name="text">
+               <string>mod</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0">
+             <widget class="QLineEdit" name="lineEdit_mod"/>
             </item>
            </layout>
           </widget>
@@ -323,8 +359,6 @@
     </widget>
    </item>
   </layout>
-  <zorder>widget_main</zorder>
-  <zorder>widget_title</zorder>
  </widget>
  <customwidgets>
   <customwidget>

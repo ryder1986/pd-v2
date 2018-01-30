@@ -18,10 +18,23 @@ public:
         connect(tcp_socket,SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(displayError(QAbstractSocket::SocketError)));
         connect(tcp_socket,SIGNAL(readyRead()),this,SLOT(handle_server_msg()),Qt::DirectConnection);
     }
+
     QByteArray get_config()
     {
+
         int request_length=Protocol::encode_configuration_request(buf);//encoder buffer
         QByteArray rst= send(buf,request_length);//talk to server
+        //        while(1){
+        //           //   prt(info,"wait util readable");
+        //        }
+//        while(!tcp_socket->isReadable())
+//        {
+//            prt(info,"wait util readable");
+//        }
+//        ret_ba=tcp_socket->readAll();
+
+
+      //  prt(info,"get %d bytes ",ret_ba.size());
         return rst.remove(0,Protocol::HEAD_LENGTH);//TODO:get the ret value;
     }
     void add_camera(QByteArray camera_config)
@@ -44,14 +57,22 @@ public slots:
 
     void handle_server_msg()
     {
-        prt(info,"get msg ");
+
         lock.lock();
         ret_ba=tcp_socket->readAll();
+        prt(info,"get %d bytes ",ret_ba.size());
         if(ret_ba.size()>0)
             need_read=true;
         lock.unlock();
 //        prt(info,"state %d",tcp_socket->state());
         int op=Protocol::decode_head_op(ret_ba.data());
+        switch(op)
+        {
+            case Protocol::GET_CONFIG:
+                emit msg_arrived(op,ret_ba.remove(0,Protocol::HEAD_LENGTH));
+            break;
+            default:break;
+        }
 //        if(ret_ba.size()>0)
 //            emit server_msg(ret_ba.remove(0,Protocol::HEAD_LENGTH),Protocol::get_operation(ret_ba.data()));
     }
@@ -91,6 +112,8 @@ public slots:
             qDebug()<<"1";
         }
     }
+signals:
+     void msg_arrived(int cmd , QByteArray buffer);
 private:
     QByteArray  send(char *buf,int len)
     {

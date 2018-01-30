@@ -22,9 +22,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    client.cpp
+    client.cpp  videowidget.cpp
 HEADERS  += mainwindow.h \
-    client.h
+    client.h videowidget.h
 
 FORMS    += form.ui
 INCLUDEPATH +=../misc/

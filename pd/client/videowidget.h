@@ -323,8 +323,8 @@ private:
 
 //            }
 //        }
-        qDebug()<<e->pos().x();
-
+      //  qDebug()<<e->pos().x();
+        prt(debug,"get x : %d",e->pos().x());
 
         int x,y,w,h;
         int new_x=e->x();
